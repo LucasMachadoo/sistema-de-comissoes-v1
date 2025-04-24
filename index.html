@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Planilha de Comissões</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Sistema de Comissões</h1>
+            </div>
+            <div class="sidebar-content">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <span id="current-user">Não definido</span>
+                        <button id="change-user-btn" class="btn-text">
+                            <i class="fas fa-exchange-alt"></i> Trocar
+                        </button>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="#" id="nav-new-record"><i class="fas fa-plus-circle"></i> Novo Registro</a></li>
+                        <li><a href="#" id="nav-search"><i class="fas fa-search"></i> Buscar</a></li>
+                        <li><a href="#" id="nav-export"><i class="fas fa-file-export"></i> Exportar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <h2><i class="fas fa-chart-line"></i> Dashboard de Comissões</h2>
+                <div class="header-actions">
+                    <div class="date-display">
+                        <i class="far fa-calendar-alt"></i>
+                        <span id="current-date"></span>
+                    </div>
+                    <button id="theme-toggle" class="btn-icon theme-toggle" title="Alternar tema">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <section class="section-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card total-today">
+                            <div class="card-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Total Hoje</h3>
+                                <p id="today-total">R$ 0,00</p>
+                            </div>
+                        </div>
+                        <div class="summary-card total-month">
+                            <div class="card-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Total do Mês</h3>
+                                <p id="month-total">R$ 0,00</p>
+                            </div>
+                        </div>
+                        <div class="summary-card total-records">
+                            <div class="card-icon">
+                                <i class="fas fa-list"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Registros</h3>
+                                <p id="records-count">0</p>
+                            </div>
+                        </div>
+                        <div class="summary-card total-all">
+                            <div class="card-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Total Geral</h3>
+                                <p id="total-all">R$ 0,00</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-form" id="section-form">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-plus-circle"></i> Novo Registro</h3>
+                            <button class="btn-icon" id="close-form">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="record-form">
+                                <div class="form-group">
+                                    <label for="protocol">
+                                        <i class="fas fa-hashtag"></i> Protocolo do Cliente:
+                                    </label>
+                                    <input type="text" id="protocol" name="protocol" required placeholder="Somente números">
+                                    <div class="form-feedback"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date">
+                                        <i class="far fa-calendar-alt"></i> Data da Videoconferência:
+                                    </label>
+                                    <input type="date" id="date" name="date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ar">
+                                        <i class="fas fa-user-tag"></i> AR:
+                                    </label>
+                                    <select id="ar" name="ar" required>
+                                        <option value="">Selecione</option>
+                                        <option value="Rede Ideia">Rede Ideia</option>
+                                        <option value="Gabrieli">Gabrieli</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="commission">
+                                        <i class="fas fa-money-bill"></i> Comissão:
+                                    </label>
+                                    <input type="text" id="commission" name="commission" readonly>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Salvar
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="fas fa-undo"></i> Limpar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-search" id="section-search">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-search"></i> Buscar Registros</h3>
+                            <button class="btn-icon" id="close-search">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="search-form">
+                                <div class="form-group">
+                                    <label for="start-date">
+                                        <i class="fas fa-calendar-minus"></i> Data Inicial:
+                                    </label>
+                                    <input type="date" id="start-date" name="start-date">
+                                </div>
+                                <div class="form-group">
+                                    <label for="end-date">
+                                        <i class="fas fa-calendar-plus"></i> Data Final:
+                                    </label>
+                                    <input type="date" id="end-date" name="end-date">
+                                </div>
+                                <div class="form-actions">
+                                    <button id="search-btn" class="btn btn-primary">
+                                        <i class="fas fa-search"></i> Buscar
+                                    </button>
+                                    <button id="clear-search-btn" class="btn btn-secondary">
+                                        <i class="fas fa-eraser"></i> Limpar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-data">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-table"></i> Registros</h3>
+                            <div class="card-actions">
+                                <button id="export-btn" class="btn btn-outline">
+                                    <i class="fas fa-file-export"></i> Exportar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table id="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Protocolo</th>
+                                            <th>Data</th>
+                                            <th>AR</th>
+                                            <th>Comissão</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-summary-detail" id="summary-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Resumo Detalhado</h3>
+                            <button class="btn-icon" id="toggle-summary">
+                                <i class="fas fa-chevron-up"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="summary-data" class="summary-grid"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <footer class="main-footer">
+                <div class="footer-content">
+                    <p>Desenvolvido por Lucas Machado</p>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Modal para troca de usuário -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-edit"></i> Trocar Usuário</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="username">Nome de Usuário:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <button id="save-user-btn" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Salvar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação -->
+    <div id="confirm-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-question-circle"></i> Confirmação</h2>
+                <span class="close-confirm">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message"></p>
+                <div class="modal-actions">
+                    <button id="confirm-yes" class="btn btn-danger">Sim</button>
+                    <button id="confirm-no" class="btn btn-secondary">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
