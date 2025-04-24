@@ -22,6 +22,9 @@
     --radius: 8px;
     --radius-sm: 4px;
     --font-main: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    --reminder-bg: #fff3cd;
+    --reminder-color: #856404;
+    --reminder-border: #ffeeba;
   }
   
   /* Tema escuro */
@@ -44,6 +47,9 @@
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --reminder-bg: #2d3748;
+    --reminder-color: #fbd38d;
+    --reminder-border: #744210;
   }
   
   * {
@@ -60,10 +66,90 @@
     min-height: 100vh;
   }
   
+  /* Tela de Login */
+  .login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  
+  .login-container {
+    width: 90%;
+    max-width: 400px;
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .login-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .login-header i {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .login-header h1 {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .login-form {
+    padding: 30px;
+  }
+  
+  .login-footer {
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .btn-block {
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 12px;
+  }
+  
   /* App Layout */
   .app-container {
     display: flex;
     min-height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  
+  .app-container.visible {
+    opacity: 1;
+    visibility: visible;
   }
   
   /* Mobile Menu Toggle */
@@ -247,6 +333,38 @@
     color: var(--text-secondary);
   }
   
+  /* Aviso de exportação */
+  .export-reminder {
+    background-color: var(--reminder-bg);
+    color: var(--reminder-color);
+    border: 1px solid var(--reminder-border);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: fadeIn 0.5s ease;
+  }
+  
+  .reminder-icon {
+    font-size: 1.5rem;
+  }
+  
+  .reminder-content {
+    flex: 1;
+  }
+  
+  .reminder-content h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  .reminder-content p {
+    font-size: 0.9rem;
+    margin: 0;
+  }
+  
   /* Cards */
   .card {
     background-color: var(--card-bg);
@@ -394,6 +512,8 @@
     border-radius: var(--radius-sm);
     font-size: 1rem;
     transition: var(--transition);
+    background-color: var(--card-bg);
+    color: var(--text-color);
   }
   
   input:focus,

@@ -8,10 +8,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Tela de Login/Bloqueio -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <i class="fas fa-lock"></i>
+                <h1>Sistema de Comissões</h1>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="login-username">
+                        <i class="fas fa-user"></i> Nome de Usuário:
+                    </label>
+                    <input type="text" id="login-username" name="login-username" required placeholder="Digite seu nome de usuário">
+                </div>
+                <button id="login-btn" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Acessar Sistema
+                </button>
+            </div>
+            <div class="login-footer">
+                <p>Desenvolvido por Lucas Machado</p>
+            </div>
+        </div>
+    </div>
+
     <div class="mobile-menu-toggle" id="mobile-menu-toggle">
         <i class="fas fa-bars"></i>
     </div>
-    <div class="app-container">
+    <div class="app-container" id="app-container">
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h1>Sistema de Comissões</h1>
@@ -52,6 +76,20 @@
                     </button>
                 </div>
             </header>
+
+            <!-- Aviso de exportação diária -->
+            <div class="export-reminder" id="export-reminder">
+                <div class="reminder-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="reminder-content">
+                    <h3>Lembrete Importante</h3>
+                    <p>Não esqueça de exportar seus dados ao final do dia para manter um backup seguro.</p>
+                </div>
+                <button id="close-reminder" class="btn-icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
 
             <div class="content-wrapper">
                 <section class="section-summary">

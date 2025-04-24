@@ -6,14 +6,11 @@ const COMMISSION_RULES = {
   
   // Inicialização
   document.addEventListener("DOMContentLoaded", () => {
+    // Verificar se o usuário está logado
+    checkLogin()
+  
     // Configurar data atual
     setCurrentDate()
-  
-    // Carregar usuário atual
-    loadCurrentUser()
-  
-    // Carregar dados salvos
-    loadData()
   
     // Configurar eventos
     setupEventListeners()
@@ -42,6 +39,79 @@ const COMMISSION_RULES = {
     // Inicializar tema
     initTheme()
   })
+  
+  // Verificar se o usuário está logado
+  function checkLogin() {
+    const currentUser = localStorage.getItem("currentUser")
+    const loginScreen = document.getElementById("login-screen")
+    const appContainer = document.getElementById("app-container")
+  
+    // Configurar evento de login
+    document.getElementById("login-btn").addEventListener("click", () => {
+      const username = document.getElementById("login-username").value.trim()
+  
+      if (!username) {
+        showToast("Por favor, informe um nome de usuário.", "error")
+        return
+      }
+  
+      // Salvar usuário e mostrar aplicação
+      localStorage.setItem("currentUser", username)
+      document.getElementById("current-user").textContent = username
+  
+      // Esconder tela de login e mostrar aplicação
+      loginScreen.style.opacity = "0"
+      loginScreen.style.visibility = "hidden"
+  
+      appContainer.classList.add("visible")
+  
+      // Carregar dados após login
+      loadData()
+  
+      // Mostrar aviso de exportação
+      showExportReminder()
+  
+      showToast(`Bem-vindo, ${username}!`, "success")
+    })
+  
+    // Se já estiver logado, mostrar aplicação diretamente
+    if (currentUser) {
+      document.getElementById("current-user").textContent = currentUser
+      loginScreen.style.display = "none"
+      appContainer.classList.add("visible")
+  
+      // Carregar dados
+      loadData()
+  
+      // Mostrar aviso de exportação
+      showExportReminder()
+    } else {
+      // Mostrar tela de login
+      loginScreen.style.display = "flex"
+      appContainer.classList.remove("visible")
+    }
+  }
+  
+  // Mostrar aviso de exportação diária
+  function showExportReminder() {
+    const reminder = document.getElementById("export-reminder")
+  
+    // Verificar se já foi mostrado hoje
+    const lastShown = localStorage.getItem("reminderLastShown")
+    const today = new Date().toISOString().split("T")[0]
+  
+    if (lastShown !== today) {
+      reminder.style.display = "flex"
+  
+      // Configurar evento para fechar o aviso
+      document.getElementById("close-reminder").addEventListener("click", () => {
+        reminder.style.display = "none"
+        localStorage.setItem("reminderLastShown", today)
+      })
+    } else {
+      reminder.style.display = "none"
+    }
+  }
   
   // Configurar todos os event listeners
   function setupEventListeners() {
@@ -232,6 +302,9 @@ const COMMISSION_RULES = {
   
     // Esconder formulário
     document.getElementById("section-form").style.display = "none"
+  
+    // Mostrar aviso de exportação se não tiver sido mostrado hoje
+    showExportReminder()
   
     showToast("Registro salvo com sucesso!", "success")
   }
@@ -493,10 +566,17 @@ const COMMISSION_RULES = {
       return
     }
   
+    // Obter nome do usuário atual
+    const username = localStorage.getItem("currentUser") || "usuario"
+  
+    // Obter data atual formatada para o nome do arquivo
+    const today = new Date()
+    const formattedDate = today.toLocaleDateString("pt-BR").replace(/\//g, "-")
+  
     let content = "SISTEMA DE PLANILHA DE COMISSÕES\n"
     content += "==============================\n\n"
-    content += `Data de exportação: ${new Date().toLocaleString("pt-BR")}\n`
-    content += `Usuário: ${localStorage.getItem("currentUser") || "Não definido"}\n\n`
+    content += `Data de exportação: ${today.toLocaleString("pt-BR")}\n`
+    content += `Usuário: ${username}\n\n`
     content += "REGISTROS:\n"
     content += "==============================\n\n"
   
@@ -535,31 +615,28 @@ const COMMISSION_RULES = {
     content += "==============================\n"
     content += `TOTAL GERAL: R$ ${totalCommission.toFixed(2)}\n`
     content += `TOTAL DE REGISTROS: ${records.length}\n`
+    content += "==============================\n\n"
+    content += "LEMBRETE: Faça a exportação diariamente para manter um backup seguro dos seus dados.\n"
   
-    // Criar e baixar o arquivo
+    // Criar e baixar o arquivo com o novo formato de nome
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `comissoes_${new Date().toISOString().slice(0, 10)}.txt`
+    a.download = `${username}_(${formattedDate}).txt`
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
   
+    // Atualizar o lembrete como mostrado hoje
+    localStorage.setItem("reminderLastShown", new Date().toISOString().split("T")[0])
+    document.getElementById("export-reminder").style.display = "none"
+  
     showToast("Arquivo exportado com sucesso!", "success")
   }
   
   // Funções para gerenciamento de usuário
-  function loadCurrentUser() {
-    const currentUser = localStorage.getItem("currentUser")
-    document.getElementById("current-user").textContent = currentUser || "Não definido"
-  
-    if (!currentUser) {
-      openUserModal()
-    }
-  }
-  
   function openUserModal() {
     const modal = document.getElementById("user-modal")
     modal.style.display = "block"
